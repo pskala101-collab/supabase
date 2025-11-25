@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react'
 import ShimmeringLoader from 'components/ui/ShimmeringLoader'
 import { useFreeProjectLimitCheckQuery } from 'data/organizations/free-project-limit-check-query'
 import { useOrganizationsQuery } from 'data/organizations/organizations-query'
+import { useRouter } from 'next-router-mock'
 import { parseAsString, useQueryState } from 'nuqs'
 import type { Organization } from 'types'
 import { Badge, Button, Card, CardHeader, CardTitle, Input_Shadcn_ } from 'ui'
@@ -85,6 +86,7 @@ const OrganizationCard = ({
 }
 
 export function OrganizationSelector({ onSelect, maxOrgsToShow = 5 }: ProjectClaimChooseOrgProps) {
+  const router = useRouter()
   const {
     data: organizations = [],
     isLoading: isLoadingOrgs,
@@ -105,14 +107,17 @@ export function OrganizationSelector({ onSelect, maxOrgsToShow = 5 }: ProjectCla
     return organizations.filter((org) => org.name.toLowerCase().includes(search.toLowerCase()))
   }, [organizations, search, showAll, maxOrgsToShow])
 
-  const searchParams = new URLSearchParams(location.search)
-  let pathname = location.pathname
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH
-  if (basePath) {
-    pathname = pathname.replace(basePath, '')
-  }
+  const searchParams = useMemo(() => {
+    const searchParams = new URLSearchParams(router.query.toString())
+    let pathname = router.pathname
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH
+    if (basePath) {
+      pathname = pathname.replace(basePath, '')
+    }
 
-  searchParams.set('returnTo', pathname)
+    searchParams.set('returnTo', pathname)
+    return searchParams
+  }, [router.pathname, router.query])
 
   const onSelectOrg = (orgSlug: string) => {
     onSelect(orgSlug)
