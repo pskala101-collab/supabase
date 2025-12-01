@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 import { useParams } from 'common'
-import { LOAD_TAB_FROM_CACHE_PARAM } from 'components/grid/SupabaseGrid.utils'
+import { buildTableEditorUrl, LOAD_TAB_FROM_CACHE_PARAM } from 'components/grid/SupabaseGrid.utils'
 import { SidePanelEditor } from 'components/interfaces/TableGridEditor/SidePanelEditor/SidePanelEditor'
 import DefaultLayout from 'components/layouts/DefaultLayout'
 import { EditorBaseLayout } from 'components/layouts/editors/EditorBaseLayout'
@@ -36,9 +36,7 @@ const TableEditorPage: NextPageWithLayout = () => {
 
       // Handle redirect to last opened table tab, or last table tab
       if (lastOpenedTable !== undefined) {
-        router.push(
-          `/project/${projectRef}/editor/${history.editor}?${LOAD_TAB_FROM_CACHE_PARAM}=true`
-        )
+        router.push(buildTableEditorUrl(projectRef, history.editor, history.editor, selectedSchema))
       } else if (lastTabId) {
         const lastTab = tabStore.tabsMap[lastTabId]
         if (lastTab)

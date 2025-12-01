@@ -41,6 +41,7 @@ export async function getGraphDataFromTables(
       id: `${table.id}`,
       type: 'table',
       data: {
+        schema: table.schema,
         ref,
         id: table.id,
         name: table.name,
