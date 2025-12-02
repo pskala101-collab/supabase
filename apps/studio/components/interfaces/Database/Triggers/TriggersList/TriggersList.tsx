@@ -65,7 +65,7 @@ export const TriggersList = () => {
   const {
     data: triggers,
     error,
-    isLoading,
+    isPending,
     isError,
     isSuccess,
   } = useDatabaseTriggersQuery({
@@ -166,11 +166,11 @@ execute function function_name();`)
     setTriggerToDelete(trigger.id.toString())
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <GenericSkeletonLoader />
   }
 
-  if (isError || !isSuccess) {
+  if (isError) {
     return <AlertError error={error} subject="Failed to retrieve database triggers" />
   }
 
