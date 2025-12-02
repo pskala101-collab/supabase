@@ -169,7 +169,6 @@ execute function function_name();`)
   if (isLoading) {
     return <GenericSkeletonLoader />
   }
-  isSuccess
 
   if (isError || !isSuccess) {
     return <AlertError error={error} subject="Failed to retrieve database triggers" />

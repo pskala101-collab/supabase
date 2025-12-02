@@ -29,7 +29,6 @@ import {
 import { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'
 import { PageSection, PageSectionContent } from 'ui-patterns/PageSection'
 import { isSmtpEnabled } from '../SmtpForm/SmtpForm.utils'
-import { layout } from '@dagrejs/dagre'
 
 export const RateLimits = () => {
   const { ref: projectRef } = useParams()
