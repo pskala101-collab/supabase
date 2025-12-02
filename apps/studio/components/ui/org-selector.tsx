@@ -108,14 +108,27 @@ export function OrganizationSelector({ onSelect, maxOrgsToShow = 5 }: ProjectCla
   }, [organizations, search, showAll, maxOrgsToShow])
 
   const searchParams = useMemo(() => {
-    const searchParams = new URLSearchParams(router.query.toString())
+    const searchParams = new URLSearchParams()
+
+    // Add all existing query params from router.query
+    Object.entries(router.query).forEach(([key, value]) => {
+      if (value !== undefined) {
+        if (Array.isArray(value)) {
+          value.forEach((v) => searchParams.append(key, v))
+        } else {
+          searchParams.set(key, value)
+        }
+      }
+    })
+
+    // Add returnTo parameter
     let pathname = router.pathname
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH
     if (basePath) {
       pathname = pathname.replace(basePath, '')
     }
-
     searchParams.set('returnTo', pathname)
+
     return searchParams
   }, [router.pathname, router.query])
 
